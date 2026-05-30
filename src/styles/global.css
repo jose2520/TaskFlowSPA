@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+/* Animaciones de transición entre vistas */
+.page-enter {
+  animation: slide-in-from-right 260ms ease-out;
+}
+
+.page-exit {
+  animation: slide-out-to-left 260ms ease-in forwards;
+}
+
+@keyframes slide-in-from-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-out-to-left {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-40%);
+    opacity: 0.2;
+  }
+}
+
+
+
+    /* =========================================
+       ANIMACIONES DE TRANSICIÓN (LOGIN / REGISTRO)
+    ========================================= */
+
+    /* Registro: oculto por defecto */
+    .sign-up-container {
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    #auth-container.right-panel-active .sign-up-container {
+      pointer-events: auto;
+      opacity: 1;
+    }
+
+    /* Login: visible por defecto, se desliza a la derecha al activar registro */
+    .sign-in-container {
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+    }
+
+    #auth-container.right-panel-active .sign-in-container {
+      opacity: 0;
+      transform: translateX(100%);
+      pointer-events: none;
+    }
+
+    /* Panel informativo de Login (lado derecho, sobre el formulario de registro) */
+    .info-panel {
+      z-index: 30;
+      opacity: 1;
+      transform: translateX(0);
+      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+    }
+
+    #auth-container.right-panel-active .info-panel {
+      opacity: 0;
+      transform: translateX(-110%);
+      pointer-events: none;
+    }
+
+    /* Panel informativo de Registro (aparece desde la derecha) */
+    .register-info-panel {
+        z-index: 30;
+        opacity: 0;
+        transform: translateX(110%);
+        pointer-events: none;
+        transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+    }
+
+    #auth-container.right-panel-active .register-info-panel {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+    }
+
+    /* Panel secundario de Registro (cabecera, aparece desde la izquierda) */
+    .info-panel2 {
+        z-index: 10;
+        opacity: 0;
+        transform: translateX(-100%);
+        pointer-events: none;
+        transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+    }
+
+    #auth-container.right-panel-active .info-panel2 {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+    }

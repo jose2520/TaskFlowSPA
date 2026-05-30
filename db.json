@@ -1,0 +1,68 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Administrador",
+      "email": "admin@taskflow.com",
+      "password": "admin123",
+      "role": "ADMIN"
+    },
+    {
+      "id": "2",
+      "name": "Usuario demo",
+      "email": "user@taskflow.com",
+      "password": "user123",
+      "role": "USER"
+    },
+    {
+      "id": "3",
+      "name": "Usuario demo2",
+      "email": "user2@taskflow.com",
+      "password": "user123",
+      "role": "USER"
+    },
+    {
+      "id": "1780101666299",
+      "name": "Jose del Carmen Diaz",
+      "email": "josedelcarmen_diaz@outlook.com",
+      "password": "123456jose",
+      "role": "USER"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "ownerId": "2",
+      "title": "Configurar el proyecto SPA",
+      "description": "Definir estructura de carpetas y responsabilidades clave.",
+      "status": "pending",
+      "createdAt": "2026-05-20"
+    },
+    {
+      "id": "2",
+      "ownerId": "2",
+      "title": "Construir formulario de tareas",
+      "description": "Crear la vista para crear y editar tareas desde la SPA.",
+      "status": "in-progress",
+      "createdAt": "2026-05-20"
+    },
+    {
+      "id": "3",
+      "ownerId": "1",
+      "title": "Revisar permisos de admin",
+      "description": "Verificar que solo ADMIN puede ver el panel de administración.",
+      "status": "completed",
+      "createdAt": "2026-05-20",
+      "dueDate": "2026-05-27"
+    },
+    {
+      "id": "1780104396936",
+      "ownerId": "1780101666299",
+      "title": "jose",
+      "description": "jose d",
+      "status": "pending",
+      "dueDate": "2026-05-29",
+      "createdAt": "2026-05-30"
+    }
+  ]
+}
