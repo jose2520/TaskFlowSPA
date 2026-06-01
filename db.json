@@ -4,28 +4,48 @@
       "id": "1",
       "name": "Administrador",
       "email": "admin@taskflow.com",
+<<<<<<< HEAD
       "password": "admin123",
+=======
+      "password": "enc:Oz43MzRraGk=",
+      "passwordComment": "admin123 encriptado",
+>>>>>>> 697fb27 (update)
       "role": "ADMIN"
     },
     {
       "id": "2",
       "name": "Usuario demo",
       "email": "user@taskflow.com",
+<<<<<<< HEAD
       "password": "user123",
+=======
+      "password": "enc:Lyk/KGtoaQ==",
+      "passwordComment": "user123 encriptado",
+>>>>>>> 697fb27 (update)
       "role": "USER"
     },
     {
       "id": "3",
       "name": "Usuario demo2",
       "email": "user2@taskflow.com",
+<<<<<<< HEAD
       "password": "user123",
+=======
+      "password": "enc:Lyk/KGtoaQ==",
+      "passwordComment": "user123 encriptado",
+>>>>>>> 697fb27 (update)
       "role": "USER"
     },
     {
       "id": "1780101666299",
       "name": "Jose del Carmen Diaz",
       "email": "josedelcarmen_diaz@outlook.com",
+<<<<<<< HEAD
       "password": "123456josee",
+=======
+      "password": "enc:a2hpbm9sMDUpPw==",
+      "passwordComment": "123456jose encriptado",
+>>>>>>> 697fb27 (update)
       "role": "USER"
     }
   ],
@@ -65,4 +85,8 @@
       "createdAt": "2026-05-30"
     }
   ]
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 697fb27 (update)
