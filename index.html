@@ -1,8 +1,17 @@
 <!DOCTYPE html>
+<!--
+  index.html
+  Archivo principal de entrada de TaskFlowSPA.
+  Define la estructura HTML base, metadatos SEO/Open Graph,
+  y carga el modulo JavaScript principal (main.js) como entry point.
+-->
 <html lang="es">
   <head>
+    <!-- Meta charset: define la codificacion de caracteres como UTF-8 -->
     <meta charset="UTF-8" />
+    <!-- Meta viewport: asegura escalado correcto en dispositivos moviles -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Meta description: descripcion breve para motores de busqueda -->
     <meta name="description" content="TaskFlowSPA es una aplicacion web SPA para la gestion de tareas y productividad, desarrollada con JavaScript Vanilla, HTML, CSS y Tailwind CSS." />
     <meta
       name="keywords"
@@ -36,15 +45,31 @@
     />
     <meta name="twitter:image" content="/favicon.ico" />
 
+    <!-- Icono de favorito para la pestana del navegador -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <link rel="shortcut icon" href="/favicon.ico" />
 
+    <!-- Titulo principal que se muestra en la pestana del navegador -->
     <title>TaskFlowSPA | Gestion de tareas y productividad</title>
   </head>
 
+  <!--
+    Cuerpo del documento.
+    bg-slate-50: fondo claro por defecto.
+    text-slate-900: color de texto oscuro.
+  -->
   <body class="min-h-screen bg-slate-50 text-slate-900">
+    <!--
+      #app: contenedor raiz donde el router SPA inyecta
+      dinamicamente las vistas (nav + contenido).
+    -->
     <div id="app" class="min-h-screen"></div>
 
+    <!--
+      Script principal (modulo ES).
+      type="module" permite usar import/export en el navegador.
+      Vite procesa este archivo y sus dependencias.
+    -->
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>

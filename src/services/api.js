@@ -1,5 +1,15 @@
+/* Servicio api.js
+   Responsabilidad: Proporciona una capa abstracta para realizar peticiones HTTP
+   (GET, POST, PATCH, DELETE) contra el backend fake (json-server).
+   Centraliza el manejo de errores de red y la serialización JSON. */
+
+// Constante con la URL base del backend fake (json-server)
 const BASE_URL = "/api";
 
+/* Realiza una petición HTTP genérica al endpoint indicado.
+   @param {string} endpoint - Ruta del recurso (ej. "/users", "/tasks/123")
+   @param {Object} [options={}] - Opciones adicionales para fetch (method, body, headers...)
+   @returns {Promise<Object|null>} - Respuesta JSON del servidor o null si es 204 */
 const request = async (endpoint, options = {}) => {
   const url = `${BASE_URL}${endpoint}`;
   const config = {
@@ -22,6 +32,7 @@ const request = async (endpoint, options = {}) => {
   }
 };
 
+/* Objeto api con métodos abreviados para cada verbo HTTP. */
 export const api = {
   get: (endpoint) => request(endpoint),
   post: (endpoint, data) =>

@@ -1,12 +1,19 @@
-import { getCurrentUser, isAuthenticated, isAdmin, logout } from "../services/authService.js";
+/* Componente principal de navegación.
+   Decide qué layout mostrar según la ruta actual y el estado de autenticación.
+   Integra el header, sidebar y las actions asociadas (logout, toggle de tema). */
+
+import { getCurrentUser } from "../services/sessionService.js";
+import { logout } from "../services/sessionService.js";
 import { goTo } from "../utils/dom.js";
+import { toggleTheme, getTheme } from "../utils/theme.js";
+import { renderHeader, renderPublicHeader } from "./header.js";
+import { renderSidebar, initSidebarActions } from "./sidebar.js";
 
-const createLink = (href, label, active = false) => {
-  const activeClasses = active ? "bg-blue-600 text-white" : "text-slate-600 hover:bg-blue-50 hover:text-blue-700";
-  return `<a data-link href="${href}" class="rounded-full px-4 py-2 text-sm font-semibold ${activeClasses}">${label}</a>`;
-};
-
+/* Renderiza el layout de navegación completo.
+   @param {string} currentPath - Ruta activa para resaltar enlaces.
+   @returns {string} HTML del header público o header + sidebar según el estado. */
 export const renderNav = (currentPath = "/") => {
+  /* Obtiene el usuario de la sesión activa y determina si está autenticado. */
   const user = getCurrentUser();
   const isAuth = Boolean(user);
 
@@ -15,44 +22,60 @@ export const renderNav = (currentPath = "/") => {
   }
 
   if (!isAuth) {
-    return `
-      <header class="border-b border-blue-100 bg-white/90 backdrop-blur">
-        <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <a class="text-xl font-black tracking-tight text-blue-900" data-link href="/">TaskFlowSPA</a>
-          <nav class="hidden items-center gap-3 md:flex">
-            ${createLink("/", "Home", currentPath === "/")}
-            ${createLink("/login", "Iniciar sesión", currentPath === "/login")}
-            ${createLink("/register", "Registrarse", currentPath === "/register")}
-          </nav>
-        </div>
-      </header>
-    `;
+    return renderPublicHeader(currentPath);
   }
 
   return `
-    <header class="border-b border-blue-100 bg-white/90 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 gap-4">
-        <a class="text-xl font-black tracking-tight text-blue-900" data-link href="/">TaskFlowSPA</a>
-        <nav class="hidden items-center gap-3 md:flex md:flex-1">
-          ${createLink("/dashboard", "Dashboard", currentPath === "/dashboard")}
-          ${createLink("/tasks", "Tareas", currentPath === "/tasks")}
-          ${createLink("/profile", "Perfil", currentPath === "/profile")}
-          ${isAdmin() ? createLink("/admin", "Admin", currentPath === "/admin") : ""}
-        </nav>
-        <div class="flex items-center gap-3">
-          <span class="hidden rounded-full bg-blue-50 px-3 py-2 text-sm font-medium text-blue-700 sm:inline-flex">${user.name}</span>
-          <button id="logout-button" class="rounded-full bg-slate-100 px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-200">Cerrar sesión</button>
-        </div>
-      </div>
-    </header>
+    ${renderHeader(currentPath)}
+    ${renderSidebar(currentPath, user.name)}
   `;
 };
 
+/* Inicializa los event listeners de la navegación:
+   logout, toggle de tema, nombre de usuario y sidebar. */
 export const initNavActions = () => {
+  /* Botón de cerrar sesión en el header de escritorio. */
   const logoutButton = document.getElementById("logout-button");
-  if (!logoutButton) return;
-  logoutButton.addEventListener("click", () => {
-    logout();
-    goTo("/login");
+  if (logoutButton) {
+    logoutButton.addEventListener("click", () => {
+      logout();
+      goTo("/login");
+    });
+  }
+
+  /* Botón de cerrar sesión dentro del sidebar móvil. */
+  const logoutButtonSidebar = document.getElementById("logout-button-sidebar");
+  if (logoutButtonSidebar) {
+    logoutButtonSidebar.addEventListener("click", () => {
+      const sidebar = document.getElementById("sidebar");
+      if (sidebar) sidebar.classList.add("translate-x-full");
+      const overlay = document.getElementById("sidebar-overlay");
+      if (overlay) {
+        overlay.classList.add("hidden");
+        overlay.classList.remove("block");
+      }
+      document.body.style.overflow = "";
+      logout();
+      goTo("/login");
+    });
+  }
+
+  /* Botón de alternar modo oscuro/claro. */
+  document.querySelectorAll(".theme-toggle").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const next = toggleTheme();
+      document.querySelectorAll(".theme-toggle").forEach((b) => {
+        b.textContent = next === "dark" ? "☀️" : "🌙";
+      });
+    });
   });
+
+  /* Elemento donde se muestra el nombre del usuario autenticado. */
+  const userName = document.getElementById("header-user-name");
+  if (userName) {
+    const user = getCurrentUser();
+    if (user) userName.textContent = user.name;
+  }
+
+  initSidebarActions();
 };

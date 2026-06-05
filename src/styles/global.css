@@ -1,107 +1,216 @@
+/* Importa las directivas base de Tailwind CSS */
 @import "tailwindcss";
+/* Define la variante personalizada "dark" para modo oscuro con la clase .dark en el <html> */
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* Animaciones de transición entre vistas */
+/* Animación de entrada entre vistas */
 .page-enter {
-  animation: slide-in-from-right 260ms ease-out;
+  animation: scale-in-from-bg 300ms ease-out;
 }
 
-.page-exit {
-  animation: slide-out-to-left 260ms ease-in forwards;
-}
-
-@keyframes slide-in-from-right {
+@keyframes scale-in-from-bg {
   from {
-    transform: translateX(100%);
-    opacity: 0.6;
+    transform: scale(0.92);
+    opacity: 0.3;
   }
   to {
-    transform: translateX(0);
+    transform: scale(1);
     opacity: 1;
   }
 }
+/* =========================================
+   ANIMACIONES DE TRANSICIÓN (LOGIN / REGISTRO)
+   ========================================= */
 
-@keyframes slide-out-to-left {
-  from {
-    transform: translateX(0);
-    opacity: 1;
-  }
-  to {
-    transform: translateX(-40%);
-    opacity: 0.2;
-  }
+/* Registro: oculto por defecto */
+.sign-up-container {
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
+#auth-container.right-panel-active .sign-up-container {
+  pointer-events: auto;
+  opacity: 1;
+}
 
+/* Login: visible por defecto, se desliza a la derecha al activar registro */
+.sign-in-container {
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+}
 
-    /* =========================================
-       ANIMACIONES DE TRANSICIÓN (LOGIN / REGISTRO)
-    ========================================= */
+#auth-container.right-panel-active .sign-in-container {
+  opacity: 0;
+  transform: translateX(100%);
+  pointer-events: none;
+}
 
-    /* Registro: oculto por defecto */
-    .sign-up-container {
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.6s ease;
-    }
+/* Panel informativo de Login (lado derecho, sobre el formulario de registro) */
+.info-panel {
+  z-index: 30;
+  opacity: 1;
+  transform: translateX(0);
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+}
 
-    #auth-container.right-panel-active .sign-up-container {
-      pointer-events: auto;
-      opacity: 1;
-    }
+#auth-container.right-panel-active .info-panel {
+  opacity: 0;
+  transform: translateX(-110%);
+  pointer-events: none;
+}
 
-    /* Login: visible por defecto, se desliza a la derecha al activar registro */
-    .sign-in-container {
-      opacity: 1;
-      transform: translateX(0);
-      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
-    }
+/* Panel informativo de Registro (aparece desde la derecha) */
+.register-info-panel {
+  z-index: 30;
+  opacity: 0;
+  transform: translateX(110%);
+  pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+}
 
-    #auth-container.right-panel-active .sign-in-container {
-      opacity: 0;
-      transform: translateX(100%);
-      pointer-events: none;
-    }
+#auth-container.right-panel-active .register-info-panel {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
 
-    /* Panel informativo de Login (lado derecho, sobre el formulario de registro) */
-    .info-panel {
-      z-index: 30;
-      opacity: 1;
-      transform: translateX(0);
-      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
-    }
+/* Panel secundario de Registro (cabecera, aparece desde la izquierda) */
+.info-panel2 {
+  z-index: 10;
+  opacity: 0;
+  transform: translateX(-100%);
+  pointer-events: none;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
+}
 
-    #auth-container.right-panel-active .info-panel {
-      opacity: 0;
-      transform: translateX(-110%);
-      pointer-events: none;
-    }
+#auth-container.right-panel-active .info-panel2 {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+}
 
-    /* Panel informativo de Registro (aparece desde la derecha) */
-    .register-info-panel {
-        z-index: 30;
-        opacity: 0;
-        transform: translateX(110%);
-        pointer-events: none;
-        transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
-    }
+/* =========================================
+   ANIMACIÓN DE TOAST (NOTIFICACIONES)
+   ========================================= */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out;
+}
 
-    #auth-container.right-panel-active .register-info-panel {
-        opacity: 1;
-        transform: translateX(0);
-        pointer-events: auto;
-    }
+/* =========================================
+   MODO OSCURO – VARIABLES CSS Y OVERRIDES
+   ========================================= */
+/* Variables CSS para tema claro (por defecto) */
+:root {
+  --bg-page: #f8fafc;
+  --bg-card: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: #e2e8f0;
+}
 
-    /* Panel secundario de Registro (cabecera, aparece desde la izquierda) */
-    .info-panel2 {
-        z-index: 10;
-        opacity: 0;
-        transform: translateX(-100%);
-        pointer-events: none;
-        transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.4s ease;
-    }
+/* Variables CSS para tema oscuro */
+:root.dark {
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --border-color: #334155;
+}
 
-    #auth-container.right-panel-active .info-panel2 {
-        opacity: 1;
-        transform: translateX(0);
-        pointer-events: auto;
-    }
+/* Aplica las variables al body con transición suave al cambiar de tema */
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  scrollbar-gutter: stable;
+}
+
+/* Override: fondos blancos → color de tarjeta oscuro */
+:root.dark .bg-white,
+:root.dark .bg-white\/90 {
+  background-color: var(--bg-card) !important;
+}
+
+/* Override: fondo slate claro → fondo de página oscuro */
+:root.dark .bg-slate-50 {
+  background-color: #0f172a !important;
+}
+
+/* Override: texto slate-900 → tono claro */
+:root.dark .text-slate-900 {
+  color: #f1f5f9 !important;
+}
+
+/* Override: textos slate secundarios → gris claro */
+:root.dark .text-slate-700,
+:root.dark .text-slate-600,
+:root.dark .text-slate-500 {
+  color: #94a3b8 !important;
+}
+
+/* Override: bordes y fondos azules claros → tonos oscuros */
+:root.dark .border-blue-100 {
+  border-color: #171f2e !important;
+}
+
+:root.dark .bg-blue-50 {
+  background-color: #171f2e !important;
+}
+:root.dark .bg-blue-100 {
+  background-color: #171f2e !important;
+}
+
+/* Override: texto azul → azul claro legible en modo oscuro */
+:root.dark .text-blue-700 {
+  color: #60a5fa !important;
+}
+
+/* Override: sombras → versión oscura */
+:root.dark .shadow-lg,
+:root.dark .shadow-xl,
+:root.dark .shadow-blue-50,
+:root.dark .shadow-blue-100,
+:root.dark .shadow-blue-200 {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Override: badges de estado (pendiente, en progreso, completado) en modo oscuro */
+:root.dark .bg-amber-100 { background-color: #78350f !important; }
+:root.dark .text-amber-700 { color: #fbbf24 !important; }
+:root.dark .bg-sky-100 { background-color: #0c4a6e !important; }
+:root.dark .text-sky-700 { color: #7dd3fc !important; }
+:root.dark .bg-emerald-100 { background-color: #064e3b !important; }
+:root.dark .text-emerald-700 { color: #34d399 !important; }
+
+/* Override: botón primary azul oscuro */
+:root.dark .bg-blue-600 {
+  background-color: #1d4ed8 !important;
+}
+
+/* Override: variantes de badges para modo oscuro */
+:root.dark .bg-amber-50 { background-color: #451a03 !important; }
+:root.dark .text-amber-600 { color: #fbbf24 !important; }
+:root.dark .bg-sky-50 { background-color: #082f49 !important; }
+:root.dark .text-sky-600 { color: #7dd3fc !important; }
+:root.dark .bg-emerald-50 { background-color: #022c22 !important; }
+:root.dark .text-emerald-600 { color: #34d399 !important; }
+
+/* Override: colores sólidos de badges para modo oscuro */
+:root.dark .bg-amber-400 { background-color: #d97706 !important; }
+:root.dark .bg-sky-400 { background-color: #38bdf8 !important; }
+:root.dark .bg-emerald-400 { background-color: #34d399 !important; }
+
+/* Override: slate-100 → fondo oscuro base */
+:root.dark .bg-slate-100 { background-color: #171f2e !important; }

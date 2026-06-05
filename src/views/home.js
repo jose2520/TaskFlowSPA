@@ -1,6 +1,17 @@
+/*
+ * Vista de inicio (Home).
+ * Página de aterrizaje pública con descripción del proyecto y enlaces
+ * a las vistas principales: login, registro, dashboard, tareas,
+ * perfil y panel admin.
+ */
+
+import { isAdmin } from "../services/authService.js";
+
 export default {
   title: "Home",
+  // render: construye el HTML de la landing page con hero, descripción y enlaces a vistas
   render: async () => `
+    <!-- Hero principal: descripción del proyecto y botones de autenticación -->
     <section class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
       <div>
         <p class="inline-flex rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">Organiza tu trabajo con calma</p>
@@ -16,6 +27,7 @@ export default {
         </div>
       </div>
 
+      <!-- Panel de vistas: tarjetas con enlaces a las secciones principales -->
       <section class="rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl shadow-blue-100/70">
         <h2 class="text-2xl font-bold text-slate-900">Vistas del proyecto</h2>
         <div class="mt-6 grid gap-4 sm:grid-cols-2">
@@ -31,10 +43,10 @@ export default {
             <p class="text-sm font-semibold text-blue-600">Mi perfil</p>
             <p class="mt-2 text-sm text-slate-600">Actualizar cuenta y datos personales.</p>
           </a>
-          <a data-link href="/admin" class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100">
+          ${isAdmin() ? `<a data-link href="/admin" class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100">
             <p class="text-sm font-semibold text-blue-600">Admin</p>
             <p class="mt-2 text-sm text-slate-600">Panel reservado para administradores.</p>
-          </a>
+          </a>` : ""}
         </div>
       </section>
     </section>
