@@ -15,17 +15,34 @@ import {
   isAdmin,
 } from "./sessionService.js";
 
+/* Normaliza un email: recorta espacios y convierte a minúsculas.
+   @param {string} email - Correo a normalizar
+   @returns {string} Email normalizado */
 const normalizeEmail = (email) => String(email).trim().toLowerCase();
 
+/* Descifra una contraseña almacenada (formato "enc:...") o retorna vacío si no es válida.
+   @param {string} password - Contraseña cifrada
+   @returns {string} Contraseña en texto plano */
 const decodePassword = (password) => {
   if (typeof password !== "string") return "";
   return decrypt(password);
 };
 
+/* Verifica si hay un usuario autenticado.
+   @returns {boolean} true si existe sesión activa */
 export const isAuthenticated = () => Boolean(getSession());
+
+/* Obtiene todos los usuarios del sistema.
+   @returns {Promise<Array>} Lista de usuarios */
 export const getAllUsers = () => api.get("/users");
+
+/* Re-exporta helpers de sesión para acceso directo desde authService. */
 export { getCurrentUser, isAdmin };
 
+/* Inicia sesión con email y contraseña.
+   Busca al usuario por email, descifra su contraseña almacenada y la compara.
+   @param {Object} credenciales - { email: string, password: string }
+   @returns {Promise<Object|null>} Usuario autenticado o null si falla */
 export const login = async ({ email, password }) => {
   const users = await api.get(
     `/users?email=${encodeURIComponent(normalizeEmail(email))}`
@@ -40,6 +57,10 @@ export const login = async ({ email, password }) => {
   return user;
 };
 
+/* Registra un nuevo usuario en el sistema.
+   Valida que el email no exista, cifra la contraseña y persiste la sesión.
+   @param {Object} datos - { name: string, email: string, password: string }
+   @returns {Promise<Object>} { user } si éxito, o { error } si el email ya existe */
 export const register = async ({ name, email, password }) => {
   const normalizedEmail = normalizeEmail(email);
   const existing = await api.get(
@@ -64,6 +85,10 @@ export const register = async ({ name, email, password }) => {
   return { user: created };
 };
 
+/* Actualiza el perfil del usuario autenticado.
+   Solo permite editar la propia cuenta. Verifica que el nuevo email no esté en uso.
+   @param {Object} datos - { id: string, name: string, email: string, password?: string }
+   @returns {Promise<Object>} { user } si éxito, o { error } si hay conflicto */
 export const updateProfile = async ({ id, name, email, password }) => {
   const currentSession = getSession();
   if (!currentSession || currentSession.id !== id) {
@@ -93,6 +118,10 @@ export const updateProfile = async ({ id, name, email, password }) => {
   return { user: updated };
 };
 
+/* Elimina la cuenta de un usuario (la propia o por admin).
+   Si el usuario se elimina a sí mismo, cierra la sesión.
+   @param {string} userId - ID del usuario a eliminar
+   @returns {Promise<boolean>} true si se eliminó correctamente */
 export const deleteAccount = async (userId) => {
   const currentSession = getSession();
   if (!currentSession) throw new Error("No autenticado");
@@ -115,6 +144,11 @@ export const deleteAccount = async (userId) => {
   return true;
 };
 
+/* Cambia el rol de un usuario (solo para ADMIN).
+   Si el cambio es sobre sí mismo, actualiza también la sesión local.
+   @param {string} userId - ID del usuario
+   @param {string} role - Nuevo rol ("USER" | "ADMIN")
+   @returns {Promise<Object>} Usuario actualizado */
 export const changeUserRole = async (userId, role) => {
   if (!isAdmin()) throw new Error("Solo administradores pueden cambiar roles");
 
